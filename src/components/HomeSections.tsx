@@ -13,6 +13,7 @@ import { PRODUCTS, FEATURED_PRODUCTS, productInCategory } from "@/data/products"
 import { HOME_REVIEWS } from "@/data/reviews";
 import { FAQS } from "@/data/faqs";
 import { cn } from "@/utils/cn";
+import { shopConfig } from "@/config/shop.config";
 import type { FAQItem } from "@/types";
 
 /* ---------------- Trust badges ---------------- */
@@ -24,11 +25,23 @@ export function TrustBadges() {
     { I: IconTruck, label: "Ships Pan-India", sub: "Delivered in 7–10 days" },
     { I: IconStar, label: "4.9★ Rated", sub: "From 2,400+ customers" },
   ];
+  const badge = ({ I, label, sub }: (typeof items)[number], hidden = false) => (
+    <div key={label} className="flex shrink-0 items-center gap-3" aria-hidden={hidden || undefined}>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-fg">
+        <I size={18} />
+      </span>
+      <div className="min-w-0">
+        <p className="whitespace-nowrap text-sm font-semibold text-fg">{label}</p>
+        <p className="whitespace-nowrap text-xs text-fg-3">{sub}</p>
+      </div>
+    </div>
+  );
   return (
     <section aria-label="Why customers trust us" className="border-y border-white/[0.06] bg-ink-900">
-      <Container className="grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:grid-cols-3 lg:grid-cols-5">
-        {items.map(({ I, label, sub }, idx) => (
-          <div key={label} className={cn("flex items-center gap-3", idx === 4 && "col-span-2 sm:col-span-1")}>
+      {/* Desktop grid — unchanged */}
+      <Container className="hidden grid-cols-5 gap-x-4 gap-y-6 py-8 lg:grid">
+        {items.map(({ I, label, sub }) => (
+          <div key={label} className="flex items-center gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-fg">
               <I size={18} />
             </span>
@@ -39,6 +52,15 @@ export function TrustBadges() {
           </div>
         ))}
       </Container>
+      {/* Mobile/tablet — auto-sliding marquee, left to right */}
+      <div
+        className="overflow-hidden py-6 lg:hidden [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]"
+      >
+        <div className="trust-marquee flex w-max items-center gap-10 pr-10">
+          {items.map((item) => badge(item))}
+          {items.map((item) => badge(item, true))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -175,7 +197,7 @@ export function WhyChooseUs() {
       <Container>
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
-            <SectionHeading id="why-title" eyebrow="Why NEONSUTRA" title="Built to glow for years, not weeks" subtitle="We obsess over the details you notice after the unboxing — even light, clean edges, quiet adapters and a warranty that means it." />
+            <SectionHeading id="why-title" eyebrow={`Why ${shopConfig.brand.name}`} title="Built to glow for years, not weeks" subtitle="We obsess over the details you notice after the unboxing — even light, clean edges, quiet adapters and a warranty that means it." />
             <div className="mt-8 overflow-hidden rounded-xl border border-white/[0.07]">
               <NeonPreview text="Made with love" font="script" colour="warm-white" size="Large" backing="Black Acrylic" label="Warm white neon sign reading Made with love on black acrylic" />
             </div>

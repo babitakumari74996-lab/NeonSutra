@@ -6,6 +6,7 @@ import {
   IconArrowRight, IconGrid, IconLayers, IconPackage, IconTruck,
   IconBolt, IconChat, IconPen, IconRuler, IconShield, IconSun, IconThermo,
 } from "@/components/Icons";
+import { shopConfig } from "@/config/shop.config";
 
 const STEPS = [
   {
@@ -44,7 +45,7 @@ export default function HowItWorksPage() {
   return (
     <>
       <SEO
-        title="How It Works | Design Your Neon Sign in 4 Steps — NEONSUTRA"
+        title={`How It Works | Design Your Neon Sign in 4 Steps — ${shopConfig.brand.name}`}
         description="From idea to glowing wall in four simple steps: pick a design, customise it live, approve a free mockup, and we handcraft and ship your LED neon sign across India."
       />
 
@@ -109,7 +110,7 @@ export default function HowItWorksPage() {
           <Reveal>
             <SectionHeading
               as="h2"
-              eyebrow="Why NEONSUTRA"
+              eyebrow={`Why ${shopConfig.brand.name}`}
               title="Built to glow for years, not weeks"
               subtitle="We obsess over the details you notice after the unboxing — even light, clean edges, quiet adapters, and a warranty that actually means something."
             />

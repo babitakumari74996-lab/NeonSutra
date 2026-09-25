@@ -1,6 +1,7 @@
 import type { Customization, OrderStatus, PaymentMethod } from "@/types";
 import { getColour } from "@/data/colours";
 import { getFont } from "@/data/fonts";
+import { shopConfig } from "@/config/shop.config";
 
 /** ₹3,499 — Indian digit grouping */
 export function formatINR(n: number): string {
@@ -77,8 +78,8 @@ export const TIMELINE_LABELS: Record<OrderStatus, string> = {
   Delivered: "Delivered",
 };
 
-export const WHATSAPP_NUMBER = "919876543210";
-export const WHATSAPP_DISPLAY = "+91 98765 43210";
+export const WHATSAPP_NUMBER = shopConfig.contact.whatsappNumber;
+export const WHATSAPP_DISPLAY = shopConfig.contact.whatsappDisplay;
 
 export function customizationSummary(c: Customization, templateName?: string): string {
   const lines = [
@@ -93,8 +94,4 @@ export function customizationSummary(c: Customization, templateName?: string): s
     `Quantity: ${c.quantity}`,
   ].filter(Boolean);
   return lines.join("\n");
-}
-
-export function whatsappLink(message: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }

@@ -4,12 +4,13 @@ import { CartItemRow } from "@/components/CartItem";
 import { CartSummary } from "@/components/CartSummary";
 import { ButtonLink, Container } from "@/components/ui";
 import { IconBag, IconShield, IconPen, IconTruck } from "@/components/Icons";
+import { shopConfig } from "@/config/shop.config";
 
 export default function CartPage() {
   const { items, subtotal, shipping, total, count } = useCart();
   return (
     <Container className="py-10 sm:py-14">
-      <SEO title="Your Cart — NEONSUTRA" description="Review your custom LED neon signs before checkout." />
+      <SEO title={`Your Cart — ${shopConfig.brand.name}`} description="Review your custom LED neon signs before checkout." />
       <h1 className="font-display text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">Your cart</h1>
       <p className="mt-1 text-sm text-fg-2">{count} item{count === 1 ? "" : "s"} · Saved on this device</p>
 

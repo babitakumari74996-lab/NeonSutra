@@ -7,13 +7,14 @@ import {
 import { Container, Reveal, SectionHeading, Stars } from "@/components/ui";
 import { IconArrowRight } from "@/components/Icons";
 import { HOME_REVIEWS } from "@/data/reviews";
+import { shopConfig } from "@/config/shop.config";
 
 export default function Home() {
   return (
     <>
       <SEO
-        title="Custom LED Neon Signs | Design Your Own Neon — NEONSUTRA"
-        description="Design a custom LED neon sign for your cafe, salon, gym, home or wedding. Live preview, instant pricing, handcrafted in India, shipped pan-India in 7–10 days."
+        title={shopConfig.seo.defaultTitle}
+        description={shopConfig.seo.defaultDescription}
       />
       <Hero />
       <TrustBadges />

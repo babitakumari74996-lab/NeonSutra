@@ -13,6 +13,7 @@ export function defaultCustomization(t: Template): Customization {
     quantity: 1,
     uploadedLogoName: null,
     uploadedLogoDataUrl: null,
+    logoColour: null,
   };
 }
 

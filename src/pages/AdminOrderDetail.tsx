@@ -81,7 +81,7 @@ export default function AdminOrderDetail() {
               <article key={i.lineId} className={card}>
                 <div className="grid gap-5 md:grid-cols-[240px_1fr]">
                   <div className="overflow-hidden rounded-lg border border-white/[0.07]">
-                    <NeonPreview variant="card" animate={false} text={cz.text} font={cz.font} colour={cz.colour} size={cz.size} backing={cz.backing} logoUrl={cz.uploadedLogoDataUrl} />
+                    <NeonPreview variant="card" animate={false} text={cz.text} font={cz.font} colour={cz.colour} size={cz.size} backing={cz.backing} logoUrl={cz.uploadedLogoDataUrl} logoColour={cz.logoColour} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-3">Custom Neon Sign · {i.templateName}</p>

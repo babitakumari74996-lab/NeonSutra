@@ -17,6 +17,7 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { defaultCustomization } from "@/hooks/useCustomizer";
 import { deliveryEstimate, formatDate, formatINR, validatePincode } from "@/utils/helpers";
+import { shopConfig } from "@/config/shop.config";
 import { priceForCustomization } from "@/utils/calculatePrice";
 import { cn } from "@/utils/cn";
 import NotFound from "./NotFound";
@@ -74,13 +75,13 @@ function ProductView({ productId }: { productId: string }) {
     { id: "delivery", label: "Delivery & Returns" },
   ];
 
-  const waMsg = `Hi NEONSUTRA! I like the "${product.name}" design (${getColour(colour).label}, ${size}). Can you help me customise it?`;
+  const waMsg = shopConfig.whatsapp.productMessage(product.name, getColour(colour).label, size);
 
   return (
     <>
       <SEO
-        title={`${product.name} Custom LED Neon Sign — from ${formatINR(product.startingPrice)} | NEONSUTRA`}
-        description={`${product.description} Handcrafted in India, 12-month warranty, ships pan-India.`}
+        title={`${product.name} Custom LED Neon Sign — from ${formatINR(product.startingPrice)} | ${shopConfig.brand.name}`}
+        description={`${product.description} Handcrafted in India, ${shopConfig.features.warrantyMonths}-month warranty, ships pan-India.`}
       />
       <Container className="py-8 sm:py-10">
         <nav aria-label="Breadcrumb" className="text-xs text-fg-3">

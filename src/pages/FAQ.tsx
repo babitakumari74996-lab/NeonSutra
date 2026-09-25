@@ -3,7 +3,7 @@ import { SEO } from "@/components/SEO";
 import { Container, Reveal, ButtonLink } from "@/components/ui";
 import { FAQS } from "@/data/faqs";
 import { IconArrowRight, IconChevronDown, IconMail, IconPhone, IconWhatsApp } from "@/components/Icons";
-import { WHATSAPP_DISPLAY, whatsappLink } from "@/utils/helpers";
+import { whatsappLink, shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 import type { FAQItem } from "@/types";
 
@@ -68,8 +68,8 @@ export default function FAQPage() {
   return (
     <>
       <SEO
-        title="FAQ | Answers about Custom Neon Signs, Shipping & Warranty — NEONSUTRA"
-        description="Everything you need to know about ordering, customising, production time, shipping across India, returns and our 12-month warranty on custom LED neon signs."
+        title={`FAQ | Answers about Custom Neon Signs, Shipping & Warranty — ${shopConfig.brand.name}`}
+        description={`Everything you need to know about ordering, customising, production time, shipping across India, returns and our ${shopConfig.features.warrantyMonths}-month warranty on custom LED neon signs.`}
       />
 
       {/* Hero */}
@@ -129,23 +129,23 @@ export default function FAQPage() {
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 <a
-                  href={whatsappLink("Hi NEONSUTRA! I have a question.")}
+                  href={whatsappLink(shopConfig.whatsapp.defaultMessage)}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white hover:shadow-[0_8px_25px_-8px_rgba(37,211,102,0.5)]"
                 >
                   <IconWhatsApp size={16} /> WhatsApp us
                 </a>
                 <a
-                  href="mailto:hello@neonsutra.in"
+                  href={`mailto:${shopConfig.contact.email}`}
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-fg hover:bg-white/[0.08]"
                 >
                   <IconMail size={16} /> Email
                 </a>
                 <a
-                  href={`tel:${WHATSAPP_DISPLAY.replace(/\s/g, "")}`}
+                  href={`tel:${shopConfig.contact.phoneDisplay.replace(/\s/g, "")}`}
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-fg hover:bg-white/[0.08]"
                 >
-                  <IconPhone size={16} /> Call {WHATSAPP_DISPLAY}
+                  <IconPhone size={16} /> Call {shopConfig.contact.phoneDisplay}
                 </a>
               </div>
             </div>

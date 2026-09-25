@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { IconWhatsApp, IconArrowRight } from "./Icons";
-import { whatsappLink } from "@/utils/helpers";
+import { whatsappLink, shopConfig } from "@/config/shop.config";
 import { getWhatsAppMessage } from "@/hooks/useSectionNav";
 import { cn } from "@/utils/cn";
 
-const DEFAULT_MSG = "Hi NEONSUTRA! I need help designing a custom neon sign.";
+const DEFAULT_MSG = shopConfig.whatsapp.defaultMessage;
 
 /** Floating support button — appears after 300px of scroll. Support only, never the primary order path. */
 export function WhatsAppFloat() {

@@ -12,6 +12,7 @@ import { useOrders } from "@/context/OrdersContext";
 import { PRODUCTS } from "@/data/products";
 import { CATEGORIES, getCategory } from "@/data/categories";
 import { formatDate, formatINR, ORDER_STATUSES } from "@/utils/helpers";
+import { shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 
 const NAV = [
@@ -27,7 +28,7 @@ export function AdminLayout() {
   const [confirm, setConfirm] = useState(false);
   return (
     <div className="min-h-screen bg-ink-950">
-      <SEO title="Admin Dashboard (Demo) — NEONSUTRA" description="Demo admin dashboard with sample orders." />
+      <SEO title={`Admin Dashboard (Demo) — ${shopConfig.brand.name}`} description="Demo admin dashboard with sample orders." />
       <div className="sticky top-0 z-40 bg-amber-400 px-4 py-1.5 text-center text-xs font-semibold text-ink-950" role="status">
         Demo Admin — sample data only.
       </div>
@@ -300,7 +301,7 @@ export function AdminProducts() {
       <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {PRODUCTS.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-xl border border-white/[0.07] bg-ink-900">
-            <NeonPreview variant="card" animate={false} text={p.defaultText} font={p.defaultFont} colour={p.defaultColour} logoUrl={p.supportsLogoUpload ? LOGO_PLACEHOLDER : null} />
+            <NeonPreview variant="card" animate={false} text={p.defaultText} font={p.defaultFont} colour={p.defaultColour} logoUrl={p.supportsLogoUpload ? LOGO_PLACEHOLDER : null} logoColour={null} />
             <div className="p-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">

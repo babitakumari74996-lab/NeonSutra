@@ -9,6 +9,7 @@ export const COLOURS: NeonColour[] = [
   { id: "green", label: "Green", hex: "#2BFF8A", core: "#E8FFF1" },
   { id: "purple", label: "Purple", hex: "#A652FF", core: "#F3E8FF" },
   { id: "yellow", label: "Yellow", hex: "#FFD21F", core: "#FFFBE3" },
+  { id: "black", label: "Black", hex: "#1A1A2E", core: "#2D2D44" },
 ];
 
 export const ALL_COLOUR_IDS: ColourId[] = COLOURS.map((c) => c.id);

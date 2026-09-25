@@ -18,7 +18,8 @@ import { usePricing } from "@/hooks/usePricing";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { setWhatsAppMessage } from "@/hooks/useSectionNav";
-import { customizationSummary, formatINR, whatsappLink } from "@/utils/helpers";
+import { customizationSummary, formatINR } from "@/utils/helpers";
+import { whatsappLink, shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 
 export default function CustomizerPage() {
@@ -63,7 +64,7 @@ function Customizer({
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const summary = useMemo(() => customizationSummary(c, template.name), [c, template.name]);
-  const waMsg = `Hi NEONSUTRA! I need help designing this neon sign:\n${summary}\nEstimated: ${formatINR(price.lineTotal)}`;
+  const waMsg = shopConfig.whatsapp.customizerMessage(summary, formatINR(price.lineTotal));
 
   useEffect(() => {
     setWhatsAppMessage(waMsg);
@@ -93,6 +94,24 @@ function Customizer({
     }
   };
 
+  const buyNow = () => {
+    if (!c.text.trim() && !c.uploadedLogoDataUrl) {
+      setTextError("Add some text (or upload a logo) before buying.");
+      document.getElementById("neon-text")?.focus();
+      return;
+    }
+    const clean = { ...c, text: c.text.trim() || "Logo only" };
+    if (editLineId) {
+      updateItem(editLineId, clean);
+      showToast({ message: "Cart item updated" });
+    } else {
+      addItem(clean);
+      clearDraft();
+      showToast({ message: `Added “${clean.text}” — proceeding to checkout` });
+    }
+    navigate("/checkout");
+  };
+
   const col = getColour(c.colour);
   const title = editLineId ? "Edit your neon sign" : template.id === "custom" ? "Design your own neon sign" : `Customise ${template.name}`;
   const ctaLabel = editLineId ? "Update Cart Item" : "Add to Cart";
@@ -100,7 +119,7 @@ function Customizer({
   return (
     <>
       <SEO
-        title={`${title} | Live Neon Customiser — NEONSUTRA`}
+        title={`${title} | Live Neon Customiser — ${shopConfig.brand.name}`}
         description="Design your custom LED neon sign with a live preview. Choose text, font, colour, size, backing and mounting — see the estimated price instantly."
       />
       <div className="mx-auto grid w-full max-w-[1600px] lg:grid-cols-[minmax(380px,2fr)_3fr]">
@@ -114,6 +133,7 @@ function Customizer({
               size={c.size}
               backing={c.backing}
               logoUrl={c.uploadedLogoDataUrl}
+              logoColour={c.logoColour}
               showDimensions
               className="aspect-[16/9] md:aspect-[16/10] lg:aspect-auto lg:h-full"
             />
@@ -215,9 +235,14 @@ function Customizer({
                 <span className="font-display text-2xl font-semibold tabular-nums">{formatINR(price.lineTotal)}</span>
                 <span className="ml-2 text-xs text-fg-3">{price.quantity > 1 ? `${formatINR(price.unitPrice)} × ${price.quantity}` : "incl. GST"}</span>
               </button>
-              <Button size="lg" onClick={submit} className="shrink-0">
-                {ctaLabel} <IconArrowRight size={18} />
-              </Button>
+              <div className="flex items-center gap-3 shrink-0">
+                <Button size="lg" variant="secondary" onClick={submit} className="shrink-0">
+                  {ctaLabel} <IconArrowRight size={18} />
+                </Button>
+                <Button size="lg" onClick={buyNow} className="shrink-0">
+                  Buy Now <IconArrowRight size={18} />
+                </Button>
+              </div>
             </div>
             <p className="mt-2 text-[11px] text-fg-3">Final price may vary based on final artwork. Our design team confirms before production.</p>
           </div>
@@ -231,7 +256,10 @@ function Customizer({
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-3">Estimated Price</p>
             <p className="font-display text-xl font-semibold tabular-nums">{formatINR(price.lineTotal)}</p>
           </div>
-          <Button onClick={submit} className="shrink-0">{ctaLabel}</Button>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="secondary" onClick={submit} className="shrink-0">{ctaLabel}</Button>
+            <Button onClick={buyNow} className="shrink-0">Buy Now</Button>
+          </div>
         </div>
       </div>
       <div className="h-20 lg:hidden" aria-hidden="true" />

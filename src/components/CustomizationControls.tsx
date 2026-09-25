@@ -263,6 +263,57 @@ export function CustomizationControls({ template, c, set, textError }: Props) {
         )}
         {uploadError && <p className="mt-2 text-xs text-err" role="alert">{uploadError}</p>}
         <p className="mt-2 text-xs text-fg-3">Final artwork will be reviewed before production.</p>
+        {c.uploadedLogoDataUrl && (
+          <div className="mt-4">
+            <label htmlFor="logo-colour" className="block text-xs font-medium text-fg-2 mb-2">Logo colour</label>
+            <div role="radiogroup" aria-labelledby="ctl-logo-colour" className="flex flex-wrap gap-2">
+              {COLOURS.map((col) => {
+                const active = c.logoColour === col.id;
+                return (
+                  <button
+                    key={col.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    aria-label={col.label}
+                    title={col.label}
+                    onClick={() => set("logoColour", active ? null : col.id)}
+                    className={cn(
+                      "grid h-9 w-9 place-items-center rounded-full border transition-all duration-200",
+                      active ? "scale-105 border-white/70 ring-2 ring-accent/50" : "border-white/10 hover:border-white/30"
+                    )}
+                  >
+                    <span
+                      className="h-6 w-6 rounded-full"
+                      style={{
+                        background: `radial-gradient(circle at 50% 45%, ${col.core} 0%, ${col.hex} 55%)`,
+                        boxShadow: active ? `0 0 10px ${col.hex}, 0 0 22px ${col.hex}` : `0 0 8px ${col.hex}88`,
+                      }}
+                    />
+                    {!active && <IconCheck size={14} className="text-accent-2" />}
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={c.logoColour === null}
+                onClick={() => set("logoColour", null)}
+                className={cn(
+                  "grid h-9 w-9 place-items-center rounded-full border transition-all duration-200",
+                  c.logoColour === null ? "scale-105 border-white/70 ring-2 ring-accent/50" : "border-white/10 hover:border-white/30"
+                )}
+                title="Match neon text colour"
+              >
+                <span className="flex items-center justify-center gap-1 text-xs text-fg-2">
+                  <IconCheck size={12} className={c.logoColour === null ? "text-accent-2" : "invisible"} />
+                  <span>AUTO</span>
+                </span>
+              </button>
+            </div>
+            <p className="mt-1.5 text-xs text-fg-3">AUTO = matches neon text colour. Pick a colour to override.</p>
+          </div>
+        )}
       </Section>
 
       {/* 9. Quantity */}

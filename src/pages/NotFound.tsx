@@ -1,11 +1,12 @@
 import { SEO } from "@/components/SEO";
 import { NeonPreview } from "@/components/NeonPreview";
 import { ButtonLink, Container } from "@/components/ui";
+import { shopConfig } from "@/config/shop.config";
 
 export default function NotFound() {
   return (
     <Container className="py-16 sm:py-24">
-      <SEO title="Page not found — NEONSUTRA" description="The page you were looking for doesn't exist." />
+      <SEO title={`Page not found — ${shopConfig.brand.name}`} description="The page you were looking for doesn't exist." />
       <div className="mx-auto max-w-2xl text-center">
         <div className="overflow-hidden rounded-xl border border-white/[0.07]">
           <NeonPreview text="404" font="retro" colour="red" size="Medium" label="Red neon sign reading 404" />

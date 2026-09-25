@@ -7,6 +7,7 @@ import { NeonPreview } from "@/components/NeonPreview";
 import { useOrders } from "@/context/OrdersContext";
 import { useToast } from "@/context/ToastContext";
 import { formatDate, formatINR, PAYMENT_LABELS, TIMELINE_LABELS } from "@/utils/helpers";
+import { shopConfig } from "@/config/shop.config";
 
 export default function OrderConfirmation() {
   const { orderId } = useParams();
@@ -17,7 +18,7 @@ export default function OrderConfirmation() {
   if (!order) {
     return (
       <Container className="py-16 text-center">
-        <SEO title="Order not found — NEONSUTRA" description="We couldn't find that order." />
+        <SEO title={`Order not found — ${shopConfig.brand.name}`} description="We couldn't find that order." />
         <h1 className="font-display text-3xl font-semibold">Order not found</h1>
         <p className="mt-2 text-fg-2">We couldn't find order <span className="font-mono">{orderId}</span> on this device. Demo orders are stored locally in your browser.</p>
         <ButtonLink to="/shop" className="mt-6">Continue Shopping</ButtonLink>
@@ -30,7 +31,7 @@ export default function OrderConfirmation() {
 
   return (
     <Container className="py-10 sm:py-14">
-      <SEO title={`Order ${order.orderId} confirmed — NEONSUTRA`} description="Your demo order has been confirmed." />
+      <SEO title={`Order ${order.orderId} confirmed — ${shopConfig.brand.name}`} description="Your demo order has been confirmed." />
       <div className="mx-auto max-w-4xl">
         <div className="text-center">
           <div className="mx-auto grid h-20 w-20 place-items-center" aria-hidden="true">
@@ -75,7 +76,7 @@ export default function OrderConfirmation() {
               {order.items.map((i) => (
                 <li key={i.lineId} className="flex gap-3 py-4">
                   <div className="w-24 shrink-0 overflow-hidden rounded-md border border-white/[0.07] sm:w-28">
-                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} />
+                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} logoColour={i.customization.logoColour} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-3">Custom Neon Sign</p>

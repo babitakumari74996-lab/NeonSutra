@@ -9,6 +9,7 @@ import { IconClose, IconFilter, IconSearch } from "@/components/Icons";
 import { CATEGORIES, getCategory } from "@/data/categories";
 import { PRODUCTS, productInCategory } from "@/data/products";
 import { formatINR } from "@/utils/helpers";
+import { shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 
 type Sort = "featured" | "price-asc" | "price-desc" | "newest" | "rating";
@@ -159,8 +160,8 @@ export default function Shop() {
   return (
     <>
       <SEO
-        title={`${title} | Custom LED Neon — NEONSUTRA`}
-        description="Browse ready-to-customise LED neon sign designs for cafes, salons, gyms, bedrooms, gaming setups, weddings and businesses. Prices from ₹2,499."
+        title={`${title} | Custom LED Neon — ${shopConfig.brand.name}`}
+        description={`Browse ready-to-customise LED neon sign designs for cafes, salons, gyms, bedrooms, gaming setups, weddings and businesses. Prices from ${formatINR(2499)}.`}
       />
       <div className="border-b border-white/[0.06] bg-ink-900">
         <Container className="py-10 sm:py-12">

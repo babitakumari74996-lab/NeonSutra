@@ -28,7 +28,8 @@ export type ColourId =
   | "red"
   | "green"
   | "purple"
-  | "yellow";
+  | "yellow"
+  | "black";
 
 export interface NeonFont {
   id: FontId;
@@ -92,6 +93,7 @@ export interface Customization {
   quantity: number;
   uploadedLogoName: string | null;
   uploadedLogoDataUrl: string | null;
+  logoColour: ColourId | null;
 }
 
 export interface CartItem {

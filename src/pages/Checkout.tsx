@@ -11,6 +11,7 @@ import { useCart } from "@/context/CartContext";
 import { useOrders } from "@/context/OrdersContext";
 import { INDIAN_STATES } from "@/data/states";
 import { formatINR, validateEmail, validatePhone, validatePincode } from "@/utils/helpers";
+import { shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 
 type Field = keyof Customer;
@@ -73,7 +74,7 @@ export default function Checkout() {
   if (items.length === 0 && !processing) {
     return (
       <Container className="py-16 text-center">
-        <SEO title="Checkout — NEONSUTRA" description="Secure demo checkout for your custom neon sign." />
+<SEO title={`Checkout — ${shopConfig.brand.name}`} description="Secure demo checkout for your custom neon sign." />
         <h1 className="font-display text-3xl font-semibold">Nothing to check out yet</h1>
         <p className="mt-2 text-fg-2">Your cart is empty. Design a sign first — it only takes a couple of minutes.</p>
         <div className="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
@@ -112,7 +113,7 @@ export default function Checkout() {
 
   return (
     <Container className="py-8 sm:py-12">
-      <SEO title="Checkout — NEONSUTRA" description="Secure demo checkout for your custom neon sign." />
+      <SEO title={`Checkout — ${shopConfig.brand.name}`} description="Secure demo checkout for your custom neon sign." />
       <nav aria-label="Breadcrumb" className="text-xs text-fg-3">
         <ol className="flex gap-1.5"><li><Link to="/cart" className="hover:text-fg">Cart</Link></li><li aria-hidden>/</li><li className="text-fg-2">Checkout</li></ol>
       </nav>
@@ -198,7 +199,7 @@ export default function Checkout() {
               {items.map((i) => (
                 <li key={i.lineId} className="flex gap-3 py-3">
                   <div className="w-20 shrink-0 overflow-hidden rounded-md border border-white/[0.07]">
-                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} />
+                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} logoColour={i.customization.logoColour} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between gap-2">

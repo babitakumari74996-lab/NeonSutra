@@ -12,6 +12,7 @@ interface Props {
   size?: SizeOption;
   backing?: BackingOption;
   logoUrl?: string | null;
+  logoColour?: ColourId | null;
   /** full = large framed wall, card = catalogue thumbnail, hero = transparent over video */
   variant?: "full" | "card" | "hero";
   animate?: boolean;
@@ -36,6 +37,7 @@ function NeonPreviewBase({
   size = "Medium",
   backing = "Clear Acrylic",
   logoUrl = null,
+  logoColour = null,
   variant = "full",
   animate = true,
   showDimensions = false,
@@ -46,6 +48,7 @@ function NeonPreviewBase({
   const uid = "n" + rawId.replace(/[^a-zA-Z0-9_-]/g, "");
   const f = getFont(font);
   const c = getColour(colour);
+  const logoC = logoColour ? getColour(logoColour) : c;
   const s = getSize(size);
   const isPlaceholder = text.trim().length === 0;
   const shown = displayText(isPlaceholder ? "Your Text" : text, font);
@@ -190,9 +193,9 @@ function NeonPreviewBase({
             <feGaussianBlur stdDeviation={10} />
           </filter>
           <filter id={`${uid}-logo`} x="-30%" y="-30%" width="160%" height="160%">
-            <feFlood floodColor={c.hex} result="col" />
+            <feFlood floodColor={logoC.hex} result="col" />
             <feComposite in="col" in2="SourceAlpha" operator="in" result="tinted" />
-            <feFlood floodColor={c.core} result="coreCol" />
+            <feFlood floodColor={logoC.core} result="coreCol" />
             <feComposite in="coreCol" in2="SourceAlpha" operator="in" result="core" />
             <feGaussianBlur in="tinted" stdDeviation={7} result="gl" />
             <feMerge>
@@ -303,7 +306,9 @@ function NeonPreviewBase({
 
           {logoUrl && (
             <image
+              key={logoUrl}
               href={logoUrl}
+              xlinkHref={logoUrl}
               x={-L / 2}
               y={box.y - gap - L}
               width={L}

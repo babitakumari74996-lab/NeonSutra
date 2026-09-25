@@ -16,6 +16,7 @@ function item(templateId: string, c: Partial<Customization>, idx: number): CartI
     quantity: 1,
     uploadedLogoName: null,
     uploadedLogoDataUrl: null,
+    logoColour: null,
     ...c,
   };
   const price = calculatePrice({

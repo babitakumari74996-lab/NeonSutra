@@ -2,7 +2,7 @@ import { SEO } from "@/components/SEO";
 import { Container, Reveal, SectionHeading, Stars, ButtonLink } from "@/components/ui";
 import { HOME_REVIEWS, PRODUCT_REVIEW_POOL } from "@/data/reviews";
 import { IconArrowRight, IconStar, IconWhatsApp } from "@/components/Icons";
-import { whatsappLink } from "@/utils/helpers";
+import { whatsappLink, shopConfig } from "@/config/shop.config";
 
 const ALL_REVIEWS = [...HOME_REVIEWS, ...PRODUCT_REVIEW_POOL];
 
@@ -19,8 +19,8 @@ export default function ReviewsPage() {
   return (
     <>
       <SEO
-        title="Customer Reviews | What India is saying about NEONSUTRA"
-        description="Over 2,400 verified customer reviews and a 4.9★ average rating. See what cafes, salons, gyms and homes across India are saying about their NEONSUTRA signs."
+        title={`Customer Reviews | What India is saying about ${shopConfig.brand.name}`}
+        description={`Over 2,400 verified customer reviews and a 4.9★ average rating. See what cafes, salons, gyms and homes across India are saying about their ${shopConfig.brand.name} signs.`}
       />
 
       {/* Hero */}
@@ -33,7 +33,7 @@ export default function ReviewsPage() {
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-fg-2">
               From Bandra cafes to Hyderabad salons, Rajouri Garden gyms to Kolkata bedrooms —
-              here's what real customers are saying about their NEONSUTRA signs.
+              here's what real customers are saying about their {shopConfig.brand.name} signs.
             </p>
           </Reveal>
 
@@ -100,7 +100,7 @@ export default function ReviewsPage() {
                     {[1,2,3,4,5].map((i) => <IconStar key={i} size={20} filled />)}
                   </div>
                   <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-                    Got a NEONSUTRA sign?
+                    Got a {shopConfig.brand.name} sign?
                   </h2>
                   <p className="mt-3 max-w-lg text-fg-2">
                     We love seeing our signs in the wild. Send us your photo on WhatsApp and we
@@ -108,7 +108,7 @@ export default function ReviewsPage() {
                   </p>
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <a
-                      href={whatsappLink("Hi NEONSUTRA! I'd love to share a photo/review of my sign.")}
+                      href={whatsappLink(shopConfig.whatsapp.reviewMessage)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-base font-semibold text-white transition-shadow hover:shadow-[0_8px_30px_-8px_rgba(37,211,102,0.6)]"
