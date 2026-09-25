@@ -18,7 +18,7 @@ export interface Category {
 }
 
 export type SizeOption = "Small" | "Medium" | "Large" | "Extra Large";
-export type BackingOption = "Clear Acrylic" | "Black Acrylic";
+export type BackingOption = "Clear Acrylic" | "Black Acrylic" | "Cut to Shape (No Backing)";
 export type FontId = "modern" | "script" | "bold" | "minimal" | "retro" | "handwritten" | "neon";
 export type ColourId =
   | "warm-white"

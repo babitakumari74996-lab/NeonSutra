@@ -6,7 +6,6 @@ import { ButtonLink, Container } from "./ui";
 import { IconBag, IconChevronDown, IconClose, IconMenu, IconSearch, IconArrowRight } from "./Icons";
 import { CATEGORIES } from "@/data/categories";
 import { useCart } from "@/context/CartContext";
-import { useSectionNav } from "@/hooks/useSectionNav";
 import { cn } from "@/utils/cn";
 
 export function Navbar() {
@@ -16,7 +15,6 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const goSection = useSectionNav();
   const navigate = useNavigate();
   const location = useLocation();
   const catRef = useRef<HTMLDivElement>(null);
@@ -116,9 +114,9 @@ export function Navbar() {
               )}
             </AnimatePresence>
           </div>
-          <button type="button" className={linkCls} onClick={() => goSection("how-it-works")}>How It Works</button>
-          <button type="button" className={linkCls} onClick={() => goSection("reviews")}>Reviews</button>
-          <button type="button" className={linkCls} onClick={() => goSection("faq")}>FAQ</button>
+          <NavLink to="/how-it-works" className={({ isActive }) => cn(linkCls, isActive && "text-fg")}>How It Works</NavLink>
+          <NavLink to="/reviews" className={({ isActive }) => cn(linkCls, isActive && "text-fg")}>Reviews</NavLink>
+          <NavLink to="/faq" className={({ isActive }) => cn(linkCls, isActive && "text-fg")}>FAQ</NavLink>
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
@@ -226,23 +224,9 @@ export function Navbar() {
                   ))}
                 </div>
                 <div className="mt-5 flex flex-col">
-                  {[
-                    ["how-it-works", "How It Works"],
-                    ["reviews", "Reviews"],
-                    ["faq", "FAQ"],
-                  ].map(([id, label]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      className="flex min-h-[48px] items-center border-b border-white/[0.05] text-left text-lg font-medium"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        setTimeout(() => goSection(id), 260);
-                      }}
-                    >
-                      {label}
-                    </button>
-                  ))}
+                  <Link to="/how-it-works" className="flex min-h-[48px] items-center border-b border-white/[0.05] text-lg font-medium" onClick={() => setMenuOpen(false)}>How It Works</Link>
+                  <Link to="/reviews" className="flex min-h-[48px] items-center border-b border-white/[0.05] text-lg font-medium" onClick={() => setMenuOpen(false)}>Reviews</Link>
+                  <Link to="/faq" className="flex min-h-[48px] items-center border-b border-white/[0.05] text-lg font-medium" onClick={() => setMenuOpen(false)}>FAQ</Link>
                   <Link to="/cart" className="flex min-h-[48px] items-center border-b border-white/[0.05] text-lg font-medium">
                     Cart {count > 0 && <span className="ml-2 text-sm text-fg-3">({count})</span>}
                   </Link>

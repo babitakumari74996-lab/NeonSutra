@@ -15,6 +15,9 @@ import CustomizerPage from "@/pages/CustomizerPage";
 import CartPage from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import OrderConfirmation from "@/pages/OrderConfirmation";
+import HowItWorksPage from "@/pages/HowItWorks";
+import ReviewsPage from "@/pages/Reviews";
+import FAQPage from "@/pages/FAQ";
 import NotFound from "@/pages/NotFound";
 import { AdminLayout, AdminDashboard, AdminOrders, AdminProducts, AdminCustomers, AdminRequests } from "@/pages/Admin";
 import AdminOrderDetail from "@/pages/AdminOrderDetail";
@@ -73,6 +76,9 @@ export default function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order/:orderId" element={<OrderConfirmation />} />
+                <Route path="/how-it-works" element={<HowItWorksPage />} />
+                <Route path="/reviews" element={<ReviewsPage />} />
+                <Route path="/faq" element={<FAQPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="/admin" element={<AdminLayout />}>

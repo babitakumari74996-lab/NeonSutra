@@ -4,10 +4,8 @@ import { Container } from "./ui";
 import { CATEGORIES } from "@/data/categories";
 import { IconFacebook, IconInstagram, IconMail, IconPhone, IconWhatsApp, IconYoutube } from "./Icons";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/utils/helpers";
-import { useSectionNav } from "@/hooks/useSectionNav";
 
 export function Footer() {
-  const goSection = useSectionNav();
   const h = "text-xs font-semibold uppercase tracking-[0.16em] text-fg-3";
   const a = "text-sm text-fg-2 transition-colors hover:text-fg";
   return (
@@ -42,8 +40,9 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5">
               <li><Link className={a} to="/shop">Shop all designs</Link></li>
               <li><Link className={a} to="/customize">Design your own</Link></li>
-              <li><button type="button" className={a} onClick={() => goSection("how-it-works")}>How it works</button></li>
-              <li><button type="button" className={a} onClick={() => goSection("faq")}>FAQ</button></li>
+              <li><Link className={a} to="/how-it-works">How it works</Link></li>
+              <li><Link className={a} to="/reviews">Reviews</Link></li>
+              <li><Link className={a} to="/faq">FAQ</Link></li>
               <li><Link className={a} to="/cart">Cart</Link></li>
               <li><Link className={a} to="/admin">Admin (demo)</Link></li>
             </ul>
@@ -59,9 +58,9 @@ export function Footer() {
           <nav aria-label="Policies">
             <h2 className={h}>Policies</h2>
             <ul className="mt-4 space-y-2.5">
-              <li><button type="button" className={a} onClick={() => goSection("faq")}>Shipping policy</button></li>
-              <li><button type="button" className={a} onClick={() => goSection("faq")}>Returns &amp; remakes</button></li>
-              <li><button type="button" className={a} onClick={() => goSection("faq")}>12-month warranty</button></li>
+              <li><Link className={a} to="/faq">Shipping policy</Link></li>
+              <li><Link className={a} to="/faq">Returns &amp; remakes</Link></li>
+              <li><Link className={a} to="/faq">12-month warranty</Link></li>
               <li><span className="text-sm text-fg-3">Privacy policy</span></li>
               <li><span className="text-sm text-fg-3">Terms of service</span></li>
             </ul>
@@ -70,7 +69,7 @@ export function Footer() {
             <h2 className={h}>Contact</h2>
             <ul className="mt-4 space-y-3 text-sm">
               <li><a className={`${a} inline-flex items-center gap-2`} href="mailto:hello@neonsutra.in"><IconMail size={16} /> hello@neonsutra.in</a></li>
-              <li><a className={`${a} inline-flex items-center gap-2`} href="tel:+919876543210"><IconPhone size={16} /> {WHATSAPP_DISPLAY}</a></li>
+              <li><a className={`${a} inline-flex items-center gap-2`} href={`tel:${WHATSAPP_DISPLAY.replace(/\s/g, "")}`}><IconPhone size={16} /> {WHATSAPP_DISPLAY}</a></li>
               <li>
                 <a className={`${a} inline-flex items-center gap-2`} href={whatsappLink("Hi NEONSUTRA! I have a question about a custom neon sign.")} target="_blank" rel="noopener noreferrer">
                   <IconWhatsApp size={16} /> WhatsApp design team

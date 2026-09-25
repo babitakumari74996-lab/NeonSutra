@@ -121,8 +121,11 @@ function NeonPreviewBase({
   const plateR = Math.min(22, plateH * 0.12);
   const plateBottom = plateY + plateH;
 
-  const haloBlur = 15;
-  const glowBlur = 4.5;
+  const noBack = backing === "Cut to Shape (No Backing)";
+  const haloBlur = noBack ? 18 : 15;
+  const glowBlur = noBack ? 6 : 4.5;
+  const haloStroke = noBack ? 18 : 9;
+  const glowStroke = noBack ? 5 : 3.5;
   const lit = isPlaceholder ? 0.35 : 1;
 
   const textProps = {
@@ -144,7 +147,7 @@ function NeonPreviewBase({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden",
+        noBack ? "relative w-full overflow-visible" : "relative w-full overflow-hidden",
         showWall && "wall-texture",
         variant === "card" ? "aspect-[4/3]" : variant === "hero" ? "aspect-[25/16]" : "aspect-[16/10]",
         className
@@ -155,7 +158,7 @@ function NeonPreviewBase({
         `Live preview of a ${c.label.toLowerCase()} LED neon sign reading "${shown}" in ${f.label} font, ${size}, on ${backing.toLowerCase()}`
       }
     >
-      <svg viewBox={`0 0 ${vbW} ${vbH}`} className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <svg viewBox={`0 0 ${vbW} ${vbH}`} className={noBack ? "absolute inset-0 h-full w-full overflow-visible" : "absolute inset-0 h-full w-full"} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <defs>
           <radialGradient id={`${uid}-spill`} cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor={c.hex} stopOpacity={variant === "hero" ? 0.3 : 0.38} />
@@ -166,10 +169,13 @@ function NeonPreviewBase({
             <stop offset="0%" stopColor="#2a2a30" />
             <stop offset="100%" stopColor="#1a1a1e" stopOpacity={0.4} />
           </linearGradient>
-          <filter id={`${uid}-halo`} x="-40%" y="-80%" width="180%" height="260%">
+          <filter id={`${uid}-halo`} x={noBack ? "-80%" : "-40%"} y={noBack ? "-150%" : "-80%"} width={noBack ? "260%" : "180%"} height={noBack ? "400%" : "260%"}>
             <feGaussianBlur stdDeviation={haloBlur} />
           </filter>
-          <filter id={`${uid}-glow`} x="-20%" y="-40%" width="140%" height="180%">
+          <filter id={`${uid}-farGlow`} x="-100%" y="-180%" width="300%" height="460%">
+            <feGaussianBlur stdDeviation={noBack ? 55 : 20} />
+          </filter>
+          <filter id={`${uid}-glow`} x={noBack ? "-40%" : "-20%"} y={noBack ? "-60%" : "-40%"} width={noBack ? "180%" : "140%"} height={noBack ? "220%" : "180%"}>
             <feGaussianBlur in="SourceGraphic" stdDeviation={glowBlur} result="b" />
             <feMerge>
               <feMergeNode in="b" />
@@ -198,20 +204,22 @@ function NeonPreviewBase({
           </filter>
         </defs>
 
-        {/* Coloured light spilling onto the wall */}
-        <g className={cn(animate && "neon-flicker")} style={{ opacity: lit }}>
-          <ellipse
-            cx={cx}
-            cy={cy}
-            rx={plateW * 0.78 + 90}
-            ry={plateH * 1.25 + 90}
-            fill={`url(#${uid}-spill)`}
-            className={animate ? "neon-breathe" : undefined}
-          />
-        </g>
+        {/* Coloured light spilling onto the wall — hidden for no-backing (tube glow is enough) */}
+        {!noBack && (
+          <g className={cn(animate && "neon-flicker")} style={{ opacity: lit }}>
+            <ellipse
+              cx={cx}
+              cy={cy}
+              rx={plateW * 0.78 + 90}
+              ry={plateH * 1.25 + 90}
+              fill={`url(#${uid}-spill)`}
+              className={animate ? "neon-breathe" : undefined}
+            />
+          </g>
+        )}
 
         {/* Mounting wire */}
-        {showWall && (
+        {showWall && !noBack && (
           <path
             d={`M ${wireX} ${plateBottom - 4} C ${wireX} ${plateBottom + 50}, ${wireX + 40} ${plateBottom + 60}, ${wireX + 46} ${vbH + 10}`}
             stroke={`url(#${uid}-wire)`}
@@ -228,40 +236,55 @@ function NeonPreviewBase({
             <rect x={plateX} y={plateY} width={plateW} height={plateH} rx={plateR} fill="#08080a" stroke="rgba(255,255,255,0.08)" strokeWidth={1.2} />
             <rect x={plateX + 2} y={plateY + 2} width={plateW - 4} height={plateH * 0.35} rx={plateR} fill="rgba(255,255,255,0.025)" />
           </g>
-        ) : (
+        ) : backing === "Clear Acrylic" ? (
           <g>
             <rect x={plateX} y={plateY} width={plateW} height={plateH} rx={plateR} fill="rgba(255,255,255,0.022)" stroke="rgba(255,255,255,0.13)" strokeWidth={1.1} />
-            <path
-              d={`M ${plateX + plateR} ${plateY + 1.5} L ${plateX + plateW * 0.45} ${plateY + 1.5}`}
-              stroke="rgba(255,255,255,0.28)"
-              strokeWidth={1.4}
-              strokeLinecap="round"
-            />
+            {variant !== "hero" && (
+              <path
+                d={`M ${plateX + plateR} ${plateY + 1.5} L ${plateX + plateW * 0.35} ${plateY + 1.5}`}
+                stroke="rgba(255,255,255,0.18)"
+                strokeWidth={1.2}
+                strokeLinecap="round"
+              />
+            )}
           </g>
-        )}
-        {/* Stand-off screws */}
-        {[
-          [plateX + 16, plateY + 16],
-          [plateX + plateW - 16, plateY + 16],
-          [plateX + 16, plateBottom - 16],
-          [plateX + plateW - 16, plateBottom - 16],
-        ].map(([x, y], i) => (
-          <g key={i}>
-            <circle cx={x} cy={y} r={5.5} fill="#3a3a42" />
-            <circle cx={x - 1.2} cy={y - 1.2} r={2.2} fill="#8a8a94" opacity={0.7} />
-          </g>
-        ))}
+        ) : null}
+        {/* Stand-off screws — hidden when no backing plate */}
+        {!noBack && (() => {
+          const screwR = variant === "hero" ? 2.8 : 5.5;
+          const hiR = variant === "hero" ? 1.1 : 2.2;
+          const hiOpacity = variant === "hero" ? 0.5 : 0.7;
+          return [
+            [plateX + 16, plateY + 16],
+            [plateX + plateW - 16, plateY + 16],
+            [plateX + 16, plateBottom - 16],
+            [plateX + plateW - 16, plateBottom - 16],
+          ].map(([x, y], i) => (
+            <g key={i}>
+              <circle cx={x} cy={y} r={screwR} fill="#3a3a42" opacity={variant === "hero" ? 0.85 : 1} />
+              <circle cx={x - 0.6} cy={y - 0.6} r={hiR} fill="#8a8a94" opacity={hiOpacity} />
+            </g>
+          ));
+        })()}
 
         {/* The sign itself */}
         <g transform={transform} className={cn(animate && "neon-flicker")} style={{ opacity: lit }}>
+          {/* Far-reaching ambient light (text-shaped, no defined edge) */}
+          {noBack && (
+            <g style={{ opacity: 0.55 }} className={animate ? "neon-breathe" : "neon-halo-static"}>
+              <text {...textProps} fill={c.hex} stroke={c.hex} strokeWidth={40} strokeLinejoin="round" filter={`url(#${uid}-farGlow)`}>
+                {shown}
+              </text>
+            </g>
+          )}
           {/* Outer halo */}
           <g className={animate ? "neon-breathe" : "neon-halo-static"}>
-            <text {...textProps} fill={c.hex} stroke={c.hex} strokeWidth={9} strokeLinejoin="round" filter={`url(#${uid}-halo)`}>
+            <text {...textProps} fill={c.hex} stroke={c.hex} strokeWidth={haloStroke} strokeLinejoin="round" filter={`url(#${uid}-halo)`}>
               {shown}
             </text>
           </g>
           {/* Tube glow */}
-          <text {...textProps} fill={c.hex} stroke={c.hex} strokeWidth={3.5} strokeLinejoin="round" filter={`url(#${uid}-glow)`}>
+          <text {...textProps} fill={c.hex} stroke={c.hex} strokeWidth={glowStroke} strokeLinejoin="round" filter={`url(#${uid}-glow)`}>
             {shown}
           </text>
           {/* Near-white core */}
