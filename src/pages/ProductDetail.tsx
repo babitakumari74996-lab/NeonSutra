@@ -188,11 +188,11 @@ function ProductView({ productId }: { productId: string }) {
               <Button size="lg" className="flex-1" onClick={() => navigate(`/customize/${product.id}`)}>
                 Customize This Design <IconArrowRight size={18} />
               </Button>
-              <Button size="lg" variant="secondary" className="flex-1" onClick={addDefault}>
-                Add to Cart
-              </Button>
               <Button size="lg" className="flex-1 sm:ml-2" onClick={() => navigate("/checkout")}>
                 Buy Now
+              </Button>
+              <Button size="lg" variant="secondary" className="flex-1" onClick={addDefault}>
+                Add to Cart
               </Button>
             </div>
             <div className="mt-4"><WhatsAppInline message={waMsg} /></div>
