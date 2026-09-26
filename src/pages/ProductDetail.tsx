@@ -184,17 +184,37 @@ function ProductView({ productId }: { productId: string }) {
               </p>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="flex-1" onClick={() => navigate(`/customize/${product.id}`)}>
-                Customize This Design <IconArrowRight size={18} />
-              </Button>
-              <Button size="lg" className="flex-1 sm:ml-2" onClick={() => navigate("/checkout")}>
-                Buy Now
-              </Button>
-              <Button size="lg" variant="secondary" className="flex-1" onClick={addDefault}>
-                Add to Cart
-              </Button>
-            </div>
+            <div className="mt-8 flex flex-col gap-4 w-full">
+  {/* मुख्य कस्टमाइज़ेशन बटन - फुल विड्थ */}
+  <Button 
+    size="lg" 
+    className="w-full justify-center flex items-center" 
+    onClick={() => navigate(`/customize/${product.id}`)}
+  >
+    Customize This Design <IconArrowRight size={18} className="ml-2" />
+  </Button>
+
+  {/* Buy Now और Add to Cart को एक ही जगह (Row) में एडजस्ट करने के लिए सब-कंटेनर */}
+  <div className="flex flex-row gap-3 w-full">
+    <Button 
+      size="lg" 
+      className="flex-1" 
+      onClick={() => navigate("/checkout")}
+    >
+      Buy Now
+    </Button>
+    
+    <Button 
+      size="lg" 
+      variant="secondary" 
+      className="flex-1" 
+      onClick={addDefault}
+    >
+      Add to Cart
+    </Button>
+  </div>
+</div>
+
             <div className="mt-4"><WhatsAppInline message={waMsg} /></div>
 
             <div className="mt-8 rounded-xl border border-white/[0.08] bg-ink-800 p-4 sm:p-5">
