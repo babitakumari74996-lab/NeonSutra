@@ -37,7 +37,7 @@ export const shopConfig = {
   },
 
   seo: {
-    defaultTitle: "Custom LED Neon Signs | Design Your Own Neon — NEONSUTRA",
+    defaultTitle: "NEONSUTRA",
     defaultDescription:
       "Design your custom LED neon sign for your cafe, salon, gym, home or wedding. Live preview, instant pricing, handcrafted in India and shipped pan-India in 7–10 days.",
     siteName: "NEONSUTRA",
