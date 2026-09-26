@@ -152,17 +152,16 @@ function NeonPreviewBase({
       className={cn(
         noBack ? "relative w-full overflow-visible" : "relative w-full overflow-hidden",
         showWall && "wall-texture",
-        variant === "card" && plateW > 0 && plateH > 0 ? "" : variant === "card" ? "aspect-[4/3]" : variant === "hero" ? "aspect-[25/16]" : "aspect-[16/10]",
+        variant === "card" ? "aspect-[4/3]" : variant === "hero" ? "aspect-[25/16]" : "aspect-[16/10]",
         className
       )}
-      style={variant === "card" && plateW > 0 && plateH > 0 ? { aspectRatio: plateW / plateH } : undefined}
       role="img"
       aria-label={
         label ??
         `Live preview of a ${c.label.toLowerCase()} LED neon sign reading "${shown}" in ${f.label} font, ${size}, on ${backing.toLowerCase()}`
       }
     >
-      <svg viewBox={`${plateX.toFixed(0)} ${plateY.toFixed(0)} ${plateW.toFixed(0)} ${plateH.toFixed(0)}`} className={noBack ? "absolute inset-0 h-full w-full overflow-visible" : "absolute inset-0 h-full w-full"} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <svg viewBox={`0 0 ${vbW} ${vbH}`} className={noBack ? "absolute inset-0 h-full w-full overflow-visible" : "absolute inset-0 h-full w-full"} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <defs>
           <radialGradient id={`${uid}-spill`} cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor={c.hex} stopOpacity={variant === "hero" ? 0.3 : 0.38} />
@@ -223,7 +222,7 @@ function NeonPreviewBase({
         )}
 
         {/* Mounting wire */}
-        {showWall && !noBack && variant !== "card" && (
+        {showWall && !noBack && (
           <path
             d={`M ${wireX} ${plateBottom - 4} C ${wireX} ${plateBottom + 50}, ${wireX + 40} ${plateBottom + 60}, ${wireX + 46} ${vbH + 10}`}
             stroke={`url(#${uid}-wire)`}
@@ -344,11 +343,4 @@ function NeonPreviewBase({
 }
 
 export const NeonPreview = memo(NeonPreviewBase);
-/* ====== Applied fixes (2026-09-26) ====== */
-/* 1. viewBox cropped to plate bounds — frame jitna bada neon, utna hi show */
-/* 2. aspect class: card me empty ("") jab plateW/plateH > 0, warna fallback */
-/* 3. inline style: aspectRatio = plateW/plateH for card variant */
-/* 4. mounting wire hidden in card variant */
-/* ======================================= */
-
 export default NeonPreview;
