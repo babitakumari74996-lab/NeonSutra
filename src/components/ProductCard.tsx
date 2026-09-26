@@ -65,7 +65,7 @@ export const LOGO_PLACEHOLDER =
 
 export function ProductGrid({ products, className }: { products: Product[]; className?: string }) {
   return (
-    <div className={cn("grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:gap-5 lg:grid-cols-3 min-[1440px]:grid-cols-4", className)}>
+    <div className={cn("grid grid-cols-2 gap-4 md:gap-5 md:grid-cols-3 min-[1440px]:grid-cols-4", className)}>
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
