@@ -232,8 +232,8 @@ export default function Checkout() {
             <ul className="mt-4 max-h-[420px] divide-y divide-white/[0.06] overflow-y-auto pr-1">
               {items.map((i) => (
                 <li key={i.lineId} className="flex gap-3 py-3">
-                  <div className="w-20 shrink-0 overflow-hidden rounded-md border border-white/[0.07]">
-                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} logoColour={i.customization.logoColour} />
+                  <div className="w-20 h-16 shrink-0 overflow-hidden rounded-md border border-white/[0.07]">
+                    <NeonPreview variant="card" animate={false} text={i.customization.text} font={i.customization.font} colour={i.customization.colour} size={i.customization.size} backing={i.customization.backing} logoUrl={i.customization.uploadedLogoDataUrl} logoColour={i.customization.logoColour} className="aspect-auto h-full" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between gap-2">
