@@ -77,6 +77,12 @@ function ProductView({ productId }: { productId: string }) {
 
   const waMsg = shopConfig.whatsapp.productMessage(product.name, getColour(colour).label, size);
 
+  const buyNow = () => {
+    addItem(config);
+    showToast({ message: `Added “${product.name}” — proceeding to checkout` });
+    navigate("/checkout");
+  };
+
   return (
     <>
       <SEO
@@ -186,9 +192,9 @@ function ProductView({ productId }: { productId: string }) {
 
             <div className="mt-8 flex flex-col gap-4 w-full">
   {/* मुख्य कस्टमाइज़ेशन बटन - फुल विड्थ */}
-  <Button 
-    size="lg" 
-    className="w-full justify-center flex items-center" 
+  <Button
+    size="lg"
+    className="w-full justify-center flex items-center"
     onClick={() => navigate(`/customize/${product.id}`)}
   >
     Customize This Design <IconArrowRight size={18} className="ml-2" />
@@ -196,18 +202,18 @@ function ProductView({ productId }: { productId: string }) {
 
   {/* Buy Now और Add to Cart को एक ही जगह (Row) में एडजस्ट करने के लिए सब-कंटेनर */}
   <div className="flex flex-row gap-3 w-full">
-    <Button 
-      size="lg" 
-      className="flex-1" 
-      onClick={() => navigate("/checkout")}
+    <Button
+      size="lg"
+      className="flex-1"
+      onClick={buyNow}
     >
       Buy Now
     </Button>
-    
-    <Button 
-      size="lg" 
-      variant="secondary" 
-      className="flex-1" 
+
+    <Button
+      size="lg"
+      variant="secondary"
+      className="flex-1"
       onClick={addDefault}
     >
       Add to Cart
