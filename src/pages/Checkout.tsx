@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode, type InputHTMLAttributes } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { Customer, PaymentMethod } from "@/types";
 import { SEO } from "@/components/SEO";
 import { Button, ButtonLink, Container, DemoTag } from "@/components/ui";
@@ -10,7 +10,7 @@ import { IconShield, IconCheck } from "@/components/Icons";
 import { useCart } from "@/context/CartContext";
 import { useOrders } from "@/context/OrdersContext";
 import { INDIAN_STATES } from "@/data/states";
-import { formatINR, validateEmail, validatePhone, validatePincode } from "@/utils/helpers";
+import { formatINR, formatDate, validateEmail, validatePhone, validatePincode } from "@/utils/helpers";
 import { shopConfig } from "@/config/shop.config";
 import { cn } from "@/utils/cn";
 
@@ -34,6 +34,20 @@ function validate(c: Customer): Errors {
   if (!c.state) e.state = "Please select your state or UT.";
   if (!validatePincode(c.pincode)) e.pincode = "Enter a valid 6-digit pincode.";
   return e;
+}
+
+function directBuyLineItem(directBuy: NonNullable<Parameters<typeof useCart>[0] extends { items: infer T } ? T[number] : never> extends { customization: infer C } ? { lineId: string; customization: C; unitPrice: number; lineTotal: number; templateName: string; category: string } : never, c: NonNullable<Parameters<typeof useCart>[0]>): NonNullable<Parameters<typeof useCart>[0] extends { items: infer T } ? T[number] : never> {
+  const { items } = c;
+  const product = items[0];
+  const t = product ? product.customization : null;
+  return {
+    lineId: "direct-buy",
+    customization: t ?? {},
+    unitPrice: t ? (t.unitPrice ?? 0) : 0,
+    lineTotal: t ? (t.lineTotal ?? 0) : 0,
+    templateName: t ? (t.templateName ?? "") : "",
+    category: t ? (t.category ?? "") : "",
+  };
 }
 
 export default function Checkout() {

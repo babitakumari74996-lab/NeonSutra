@@ -56,7 +56,7 @@ export function CartItemRow({ item, compact = false, onNavigate }: { item: CartI
 
   return (
     <article className="flex gap-3 py-4 sm:gap-4" aria-label={`Custom neon sign: ${c.text}`}>
-      <div className={cn("shrink-0 overflow-hidden rounded-lg border border-white/[0.07]", compact ? "w-24" : "w-28 sm:w-40")}>
+      <div className={cn("shrink-0 overflow-hidden rounded-lg border border-white/[0.07]", compact ? "w-24 h-16" : "w-28 sm:w-40 h-20")}>
         <NeonPreview
           variant="card"
           animate={false}
@@ -66,6 +66,7 @@ export function CartItemRow({ item, compact = false, onNavigate }: { item: CartI
           size={c.size}
           backing={c.backing}
           logoUrl={c.uploadedLogoDataUrl}
+          className="aspect-auto h-full"
         />
       </div>
       <div className="min-w-0 flex-1">

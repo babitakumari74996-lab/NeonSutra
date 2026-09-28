@@ -78,9 +78,7 @@ function ProductView({ productId }: { productId: string }) {
   const waMsg = shopConfig.whatsapp.productMessage(product.name, getColour(colour).label, size);
 
   const buyNow = () => {
-    addItem(config);
-    showToast({ message: `Added “${product.name}” — proceeding to checkout` });
-    navigate("/checkout");
+    navigate("/checkout", { state: { directBuy: config } });
   };
 
   return (
