@@ -101,15 +101,7 @@ function Customizer({
       return;
     }
     const clean = { ...c, text: c.text.trim() || "Logo only" };
-    if (editLineId) {
-      updateItem(editLineId, clean);
-      showToast({ message: "Cart item updated" });
-    } else {
-      addItem(clean);
-      clearDraft();
-      showToast({ message: `Added “${clean.text}” — proceeding to checkout` });
-    }
-    navigate("/checkout");
+    navigate("/checkout", { state: { directBuy: clean } });
   };
 
   const col = getColour(c.colour);

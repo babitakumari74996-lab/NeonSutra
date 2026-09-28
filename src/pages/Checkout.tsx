@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ReactNode, type InputHTMLAttributes } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import type { Customer, PaymentMethod } from "@/types";
+import type { Customer, PaymentMethod, Template } from "@/types";
 import { SEO } from "@/components/SEO";
 import { Button, ButtonLink, Container, DemoTag } from "@/components/ui";
 import { CustomizationSpecs } from "@/components/CartItem";
@@ -36,24 +36,35 @@ function validate(c: Customer): Errors {
   return e;
 }
 
-function directBuyLineItem(directBuy: NonNullable<Parameters<typeof useCart>[0] extends { items: infer T } ? T[number] : never> extends { customization: infer C } ? { lineId: string; customization: C; unitPrice: number; lineTotal: number; templateName: string; category: string } : never, c: NonNullable<Parameters<typeof useCart>[0]>): NonNullable<Parameters<typeof useCart>[0] extends { items: infer T } ? T[number] : never> {
-  const { items } = c;
-  const product = items[0];
-  const t = product ? product.customization : null;
+function buildDirectBuyItem(directBuy: Customization): CartItem {
+  const t = { name: directBuy.templateName || "Custom Sign", category: directBuy.category || "quotes" } as Template;
+  const quantity = directBuy.quantity ?? 1;
   return {
-    lineId: "direct-buy",
-    customization: t ?? {},
-    unitPrice: t ? (t.unitPrice ?? 0) : 0,
-    lineTotal: t ? (t.lineTotal ?? 0) : 0,
-    templateName: t ? (t.templateName ?? "") : "",
-    category: t ? (t.category ?? "") : "",
+    lineId: "direct-buy-" + Date.now(),
+    customization: { ...directBuy, quantity },
+    unitPrice: directBuy.unitPrice ?? 0,
+    lineTotal: directBuy.lineTotal ?? 0,
+    templateName: t.name,
+    category: t.category,
   };
 }
 
 export default function Checkout() {
-  const { items, subtotal, shipping, total, clearCart } = useCart();
+  const { items: cartItems, subtotal: cartSubtotal, shipping: cartShipping, total, clearCart, addItem } = useCart();
   const { placeOrder } = useOrders();
   const navigate = useNavigate();
+  const location = useLocation();
+  const directBuy = (location.state as { directBuy?: Customization } | null)?.directBuy;
+  const isDirectBuy = !!directBuy;
+
+  const items = isDirectBuy ? [buildDirectBuyItem(directBuy)] : cartItems;
+  const subtotal = isDirectBuy
+    ? items[0].customization.unitPrice * items[0].customization.quantity
+    : cartSubtotal;
+  const shipping = isDirectBuy
+    ? (subtotal > 4999 ? 0 : 199)
+    : cartShipping;
+
   const [form, setForm] = useState<Customer>({ fullName: "", email: "", phone: "", address: "", landmark: "", city: "", state: "", pincode: "" });
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -79,7 +90,10 @@ export default function Checkout() {
     if (processing) return;
     setProcessing(true);
     window.setTimeout(() => {
-      const order = placeOrder({ customer: { ...form, phone: form.phone.replace(/\s/g, "") }, items, paymentMethod: payment });
+      const orderItems = isDirectBuy
+        ? items.map((i) => ({ ...i }))
+        : cartItems;
+      const order = placeOrder({ customer: { ...form, phone: form.phone.replace(/\s/g, "") }, items: orderItems, paymentMethod: payment });
       clearCart();
       navigate(`/order/${order.orderId}`, { replace: true });
     }, 2000);
@@ -133,6 +147,12 @@ export default function Checkout() {
       </nav>
       <h1 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">Checkout</h1>
       <p className="mt-1 flex items-center gap-2 text-sm text-fg-2"><IconShield size={16} /> Demo checkout — no real payment is processed.</p>
+
+      {isDirectBuy && (
+        <div className="mb-4 rounded-lg border border-accent/30 bg-accent/5 px-4 py-2 text-sm">
+          <span className="font-semibold text-accent">Direct checkout:</span> {directBuy.templateName ?? "Custom Sign"} — {formatINR(items[0].lineTotal)} (qty: {items[0].customization.quantity}). This item was not added to your cart.
+        </div>
+      )}
 
       <form onSubmit={submit} noValidate className="mt-8 grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-10">
         <div className="min-w-0 space-y-6">
